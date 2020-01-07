@@ -1,7 +1,7 @@
-dist: trusty
 language: java
-install: gradle assemble
+install: true
 
+dist: trusty
 jdk:
   - oraclejdk8
 
