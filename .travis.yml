@@ -5,6 +5,4 @@ dist: trusty
 jdk:
   - oraclejdk8
 
-script:
-  - ./gradlew assemble
-
+script: gradle check
