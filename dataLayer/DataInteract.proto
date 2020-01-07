@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.incarcloud.mo;
+
+message SearchData{
+}
+
+message SearchParam{
+ string vin = 1;
+}
+
+message ResponseResult{
+string vin = 1;
+int32 count = 1;
+}
+
+service MessageCount{
+     rpc SearchData(SearchParam) returns (ResponseResult);
+}
