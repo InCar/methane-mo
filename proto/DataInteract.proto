@@ -10,8 +10,7 @@ message SearchParam{
 }
 
 message ResponseResult{
-string vin = 1;
-int32 count = 1;
+    repeated SearchParam list = 1;
 }
 
 service MessageCount{
