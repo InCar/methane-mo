@@ -5,6 +5,10 @@ dist: trusty
 jdk:
   - oraclejdk8
 
+branches:
+  only:
+    - master
+
 cache:
   directories:
     - $HOME/gradle-4.10.3
