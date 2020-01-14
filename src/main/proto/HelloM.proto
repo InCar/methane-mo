@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.incarcloud.std;
+
+message HelloCountArgV1{
+}
+
+message VinCount{
+    string vin = 1;
+    int32 count = 2;
+}
+
+message HelloCountV1{
+    repeated VinCount list = 1;
+}
+
+service CountServiceV1{
+    rpc Count(HelloCountArgV1) returns (HelloCountV1);
+}

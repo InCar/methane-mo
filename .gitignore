@@ -17,3 +17,4 @@ out/
 /gradle.properties
 *.js.map
 **/upload/
+src/main/java/com/incarcloud/std
