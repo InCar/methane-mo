@@ -1,9 +1,9 @@
 package com.incarcloud.methane.monitor.controller;
 
-import com.incarcloud.monitor.model.VinCount;
-import com.incarcloud.service.CountService;
+import com.incarcloud.methane.monitor.model.VinCount;
+import com.incarcloud.methane.monitor.service.ICountService;
+import com.incarcloud.methane.monitor.serviceImpl.CountService;
 import com.incarcloud.std.HelloM;
-import io.grpc.StatusRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("hello")
 public class HelloController{
-    private final CountService _countSrv;
+    private final ICountService _countSrv;
 
     @Autowired
-    public HelloController(CountService countSrv){
+    public HelloController(ICountService countSrv){
         _countSrv = countSrv;
     }
 

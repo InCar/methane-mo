@@ -32,13 +32,6 @@ allprojects {
         jcenter()
     }
 
-    configurations {
-        developmentOnly
-        runtimeClasspath {
-            extendsFrom developmentOnly
-        }
-    }
-
     dependencies {
         //springboot web支持
         compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}"){
@@ -79,15 +72,6 @@ protobuf {
     }
 }
 
-sourceSets {
-    main {
-        proto {
-            //proto文件目录
-            srcDir 'src/main/proto'
-        }
-    }
-}
-
 compileJava{
     options.compilerArgs << "-Xlint:deprecation"
 }
@@ -102,6 +86,19 @@ bootRun {
      */
     if (project.hasProperty('jvmArgs')) {
         jvmArgs = (project.jvmArgs.split("\\s+") as List)
+    }
+}
+
+test{
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+
+    if(project.hasProperty("testCaseOnly")) {
+        filter {
+            includeTestsMatching testCaseOnly
+        }
     }
 }
 

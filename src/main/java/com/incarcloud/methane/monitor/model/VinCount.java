@@ -1,4 +1,4 @@
-package com.incarcloud.monitor.model;
+package com.incarcloud.methane.monitor.model;
 
 public class VinCount {
     public String getVin() {
