@@ -2,7 +2,6 @@ package com.incarcloud.methane.monitor.controller;
 
 import com.incarcloud.methane.monitor.model.VinCount;
 import com.incarcloud.methane.monitor.service.ICountService;
-import com.incarcloud.methane.monitor.serviceImpl.CountService;
 import com.incarcloud.std.HelloM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
