@@ -24,6 +24,10 @@
             justify-content: flex-end;
         }
 
+        .row-space-between{
+            justify-content: space-between;
+        }
+
         h1{
             text-align: center;
         }
@@ -49,10 +53,11 @@
         }
 
         .table {
-              margin: 8px auto;
-              border-collapse: collapse;
-              text-align: center;
-              border: 2px solid grey;
+            margin: 8px 0;
+            flex-grow: 1;
+            border-collapse: collapse;
+            text-align: center;
+            border: 2px solid grey;
         }
         .table tr:hover > td {
             background-color: #F2F2F2;
@@ -61,8 +66,13 @@
               border: 1px solid grey;
               white-space: nowrap;
               background-color: lightgray;
-              padding: 4px 72px;
               font-size: small;
+              padding: 4px 16px;
+        }
+        @media (min-width: 768px) {
+            .table th{
+                padding: 4px 72px;
+            }
         }
         .table td {
               border: 1px solid grey;
@@ -72,6 +82,11 @@
 
         .tm{
             font-size: smaller;
+        }
+
+        .error{
+            font-size: smaller;
+            color: crimson;
         }
     </style>
 </head>
@@ -87,7 +102,7 @@
             </form>
         </div>
 
-        <div class="row">
+        <div class="row row-align-center">
             <table class="table">
                 <thead>
                     <th>#</th>
@@ -104,7 +119,8 @@
             </table>
         </div>
 
-        <div class="row row-align-right">
+        <div class="row row-space-between">
+            <span class="error">{{error}}</span>
             <span class="tm" v-text="tm"></span>
         </div>
     </div>
@@ -121,7 +137,8 @@
                     {vin: "TEST98765ABCDE002", count: 0},
                     {vin: "TEST98765ABCDE003", count: 23765}
                 ],
-                tm: ""
+                tm: "",
+                error: ""
             }
         });
 
@@ -134,9 +151,12 @@
         function fetch(vin){
             var url = "/hello/count?vin="+vin;
             $.get(url, function(data){
-                // TODO: 更新数据
-                console.info(url);
-                console.info(data);
+                // 更新数据
+                vm.error = "";
+                vm.listVC.splice(0, vm.listVC.length);
+                data.forEach(function(x){ vm.listVC.push(x); })
+            }).fail(function(e){
+                vm.error = e.responseJSON.message;
             });
         }
 
@@ -145,7 +165,7 @@
 
         setInterval(function(){
             vm.tm = moment().format("YYYY-MM-DD HH:mm:ss");
-        }, 500);
+        }, 200);
 
         $("form").submit(function(e){
             e.preventDefault();
