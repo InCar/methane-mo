@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Hello Monitor</title>
+    <style type="text/css">
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .row{
+            display: flex;
+        }
+
+        .row-align-center{
+            justify-content: center;
+        }
+
+        .row-align-right{
+            justify-content: flex-end;
+        }
+
+        .row-space-between{
+            justify-content: space-between;
+        }
+
+        h1{
+            text-align: center;
+        }
+
+        form{
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="text"]{
+            border: 2px solid gray;
+            border-radius: 3px;
+            padding: 4px;
+            text-align: center;
+        }
+
+        input[type="submit"]{
+            background-color: lightgray;
+            border: 2px solid gray;
+            border-radius: 3px;
+            padding: 2px;
+            margin: 0 8px;
+        }
+
+        .table {
+            margin: 8px 0;
+            flex-grow: 1;
+            border-collapse: collapse;
+            text-align: center;
+            border: 2px solid grey;
+        }
+        .table tr:hover > td {
+            background-color: #F2F2F2;
+        }
+        .table th {
+              border: 1px solid grey;
+              white-space: nowrap;
+              background-color: lightgray;
+              font-size: small;
+              padding: 4px 16px;
+        }
+        @media (min-width: 768px) {
+            .table th{
+                padding: 4px 72px;
+            }
+        }
+        .table td {
+              border: 1px solid grey;
+              white-space: nowrap;
+              padding: 4px 16px;
+        }
+
+        .tm{
+            font-size: smaller;
+        }
+
+        .error{
+            font-size: smaller;
+            color: crimson;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <div class="row row-align-center">
+            <h1>Hello Monitor V1 {{demo}}</h1>
+        </div>
+        <div class="row">
+            <form>
+                <input type="text" name="vin" placeholder="输入唯一标识符(VIN)查询" maxlength="17" />
+                <input type="submit" value="点击查询">
+            </form>
+        </div>
+
+        <div class="row row-align-center">
+            <table class="table">
+                <thead>
+                    <th>#</th>
+                    <th>唯一标识符(VIN)</th>
+                    <th>发送消息数量</th>
+                </thead>
+                <tbody>
+                    <tr v-for="(vc, idx) in listVC">
+                        <td>{{idx+1}}</td>
+                        <td>{{vc.vin}}</td>
+                        <td>{{vc.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row row-space-between">
+            <span class="error">{{error}}</span>
+            <span class="tm" v-text="tm"></span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js" integrity="sha256-ngFW3UnAN0Tnm76mDuu7uUtYEcG3G5H1+zioJw3t+68=" crossorigin="anonymous"></script>
+    <script defer>
+        var vm = new Vue({
+            data:{
+                demo: "(示例数据)",
+                listVC: [
+                    {vin: "TEST98765ABCDE001", count: 32},
+                    {vin: "TEST98765ABCDE002", count: 0},
+                    {vin: "TEST98765ABCDE003", count: 23765}
+                ],
+                tm: "",
+                error: ""
+            }
+        });
+
+        // 清空排版数据
+        // vm.listVC.length = 0;
+        // vm.demo = "";
+
+        vm.$mount("#app");
+
+        function fetch(vin){
+            var url = "/hello/count?vin="+vin;
+            $.get(url, function(data){
+                // 更新数据
+                vm.error = "";
+                vm.listVC.splice(0, vm.listVC.length);
+                data.forEach(function(x){ vm.listVC.push(x); })
+            }).fail(function(e){
+                vm.error = e.responseJSON.message;
+            });
+        }
+
+        // 查询数据
+        fetch("");
+
+        setInterval(function(){
+            vm.tm = moment().format("YYYY-MM-DD HH:mm:ss");
+        }, 200);
+
+        $("form").submit(function(e){
+            e.preventDefault();
+            var vin = $("form").serializeArray()[0]["value"];
+            fetch(vin);
+        });
+    </script>
+</body>
+</html>

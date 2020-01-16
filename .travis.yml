@@ -11,15 +11,15 @@ branches:
 
 cache:
   directories:
-    - $HOME/gradle-4.10.3
+    - $HOME/gradle-5.6.4
     - $HOME/.gradle
 
 before_install:
-  - if [ ! -d "$HOME/gradle-4.10.3" ];
-    then (wget -P $HOME https://services.gradle.org/distributions/gradle-4.10.3-bin.zip
-    && unzip -d $HOME $HOME/gradle-4.10.3-bin.zip);
+  - if [ ! -f "$HOME/gradle-5.6.4/bin/gradle" ];
+    then (wget -P $HOME https://services.gradle.org/distributions/gradle-5.6.4-bin.zip
+    && unzip -d $HOME $HOME/gradle-5.6.4-bin.zip);
     fi
-  - export GRADLE_HOME=$HOME/gradle-4.10.3
+  - export GRADLE_HOME=$HOME/gradle-5.6.4
   - export PATH=$GRADLE_HOME/bin:$PATH
   - gradle -v
 
